@@ -2,7 +2,7 @@
 
 Diese Bridge übersetzt MIDI-Signale eines **Reloop Terminal Mix 8** in MIDI-Signale, die rekordbox über ein virtuelles loopMIDI-Gerät mit dem Profil **PIONEER DDJ-SX** verarbeiten kann.
 
-Der aktuelle Stand ist für Windows 10/11 und rekordbox 6 ausgelegt. Er unterstützt zwei Jogwheels, Play/Pause, Cue, Load für Deck 1 und 2, den Tempo-Fader für Deck 1/2 sowie einen experimentellen Loop-Bereich. Die funktionierenden Kernfunktionen werden über einen kontrollierten Filter weitergegeben; unbekannte MIDI-Signale werden nicht an rekordbox gesendet.
+Der aktuelle Stand ist für Windows 10/11 und rekordbox 6 ausgelegt. Er unterstützt zwei Jogwheels, Play/Pause, Cue, Load für Deck 1 und 2, den Tempo-Fader für Deck 1/2 sowie Kanal-Fader, Gain und EQ über eine isolierte Mixer-Übersetzung. Der Crossfader bleibt vorerst deaktiviert. Die funktionierenden Kernfunktionen werden über einen kontrollierten Filter weitergegeben; unbekannte MIDI-Signale werden nicht an rekordbox gesendet.
 
 > **Wichtig:** Das Projekt verwendet ein virtuelles MIDI-Gerät. Der physische Terminal Mix 8 darf in rekordbox nicht zusätzlich als zweiter aktiver MIDI-Eingang für dieselben Funktionen gemappt werden.
 
@@ -17,6 +17,9 @@ Der aktuelle Stand ist für Windows 10/11 und rekordbox 6 ausgelegt. Er unterst�
 | Cue Deck 1/2 | Aktiv | TM8 Note 4 wird auf Pioneer Note 12 übersetzt |
 | Load Deck 1/2 | Aktiv | TM8 Note 16 wird deckabhängig auf `96 46`/`96 47` übersetzt |
 | Tempo-Fader Deck 1/2 | Aktiv | 14-Bit-Pitchwheel wird als Pioneer-HiRes-CC 0 + CC 32 ausgegeben |
+| Kanal-Fader Deck 1–4 | Neu, zu testen | TM8 CC 15 wird isoliert auf Pioneer CC 19 übersetzt |
+| Gain und EQ Deck 1–4 | Neu, zu testen | TM8 CC 9–12 werden isoliert auf Pioneer CC 4/7/11/15 übersetzt |
+| Crossfader | Deaktiviert | Wird in dieser Version absichtlich nicht weitergeleitet |
 | Loop-ON | Experimentell | AutoLoop an der aktuellen Position mit gewählter Loop-Länge |
 | Loop-Encoder | Experimentell | kleiner/größer über LoopHalf/LoopDouble |
 | Encoder-Druck | Absichtlich deaktiviert | erzeugt keine Aktion |
@@ -38,7 +41,8 @@ Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nich
 | Loop-Encoder Deck 2 | 50 % | Eingangssignal bekannt; LoopHalf/LoopDouble-Ausgabe noch in Validierung |
 | Loop-Encoder Deck 1 | 0 % | Encoder liefert im aktuellen Dump keine MIDI-Daten; Hardwareprüfung erforderlich |
 | Tempo-Fader und Tempo-Funktionen | 100 % | 14-Bit-Tempo-Fader implementiert und in rekordbox getestet |
-| Kanal-Fader, Crossfader und EQ | 0 % | Noch nicht aufgenommen und getestet |
+| Kanal-Fader, Gain und EQ | 50 % | Bridge und CSV ergänzt; Controller-Test steht noch aus |
+| Crossfader | 0 % | Absichtlich ausgelassen |
 | Pads, Hot Cues und Sampler | 0 % | Noch nicht aufgenommen und getestet |
 | FX-Regler und FX-Tasten | 0 % | Noch nicht aufgenommen und getestet |
 | Browser, Track-Auswahl und weitere Bedienelemente | 0 % | Noch nicht aufgenommen und getestet |
@@ -46,7 +50,7 @@ Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nich
 ### Nächste Schritte
 
 1. **Loop-ON und Loop-Encoder stabilisieren**, ohne den funktionierenden Transport- und Jogwheel-Bereich zu verändern.
-2. **Mixer-Bereich** mit Kanal-Fadern, Crossfader, Gain und EQ hinzufügen.
+2. **Kanal-Fader, Gain und EQ** einzeln testen, ohne den Crossfader zu aktivieren.
 3. **Pads und Hot Cues** pro Deck aufnehmen und testen.
 4. **FX- und Browser-Bereich** ergänzen.
 5. Nach jeder Gruppe eine versionierte Sicherung erstellen und alle bereits fertigen Funktionen erneut testen.
@@ -85,6 +89,11 @@ Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nich
 | Loop größer | Note 19 |
 | Tempo-Fader MSB | CC 0 auf dem jeweiligen Kanal |
 | Tempo-Fader LSB | CC 32 auf dem jeweiligen Kanal |
+| Kanal-Fader | CC 19 auf dem jeweiligen Kanal |
+| Gain | CC 4 auf dem jeweiligen Kanal |
+| EQ High | CC 7 auf dem jeweiligen Kanal |
+| EQ Mid | CC 11 auf dem jeweiligen Kanal |
+| EQ Low | CC 15 auf dem jeweiligen Kanal |
 
 ## Voraussetzungen
 

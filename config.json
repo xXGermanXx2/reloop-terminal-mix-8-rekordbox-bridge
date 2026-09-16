@@ -34,6 +34,16 @@
     "output_cc": 0,
     "output_lsb_cc": 32
   },
+  "mixer": {
+    "enabled": true,
+    "target_cc_by_input_cc": {
+      "9": 4,
+      "10": 7,
+      "11": 11,
+      "12": 15,
+      "15": 19
+    }
+  },
   "jog": {
     "enabled": true,
     "cc_by_deck": {"0": 7, "1": 7, "2": 7, "3": 7},

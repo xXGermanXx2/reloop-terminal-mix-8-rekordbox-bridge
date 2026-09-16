@@ -21,6 +21,38 @@ Der aktuelle Stand ist für Windows 10/11 und rekordbox 6 ausgelegt. Er unterst�
 | Encoder-Druck | Absichtlich deaktiviert | erzeugt keine Aktion |
 | Pitch-Bend | Deaktiviert | wird nicht zum Jogwheel hinzugefügt |
 
+## Roadmap und Mapping-Fortschritt
+
+Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nicht nach der Anzahl einzelner CSV-Zeilen. Eine Gruppe gilt erst als fertig, wenn das Eingangssignal identifiziert, die Bridge-Übersetzung implementiert, das Rekordbox-Profil angepasst und die Funktion am Controller getestet wurde.
+
+### Gesamtfortschritt: **ca. 55 %**
+
+| Bereich | Fortschritt | Status |
+|---|---:|---|
+| Jogwheels und Jog-Touch, Deck 1/2 | 100 % | Fertig und getestet |
+| Play/Pause, Deck 1/2 | 100 % | Fertig und getestet |
+| Cue, Deck 1/2 | 100 % | Fertig und getestet |
+| Load, Deck 1/2 | 100 % | Fertig und getestet |
+| Loop-ON/AutoLoop | 70 % | Signal und AutoLoop-Ziel bekannt; Rekordbox-Verhalten wird weiter abgesichert |
+| Loop-Encoder Deck 2 | 50 % | Eingangssignal bekannt; LoopHalf/LoopDouble-Ausgabe noch in Validierung |
+| Loop-Encoder Deck 1 | 0 % | Encoder liefert im aktuellen Dump keine MIDI-Daten; Hardwareprüfung erforderlich |
+| Tempo-Fader und Tempo-Funktionen | 0 % | Noch nicht aufgenommen und getestet |
+| Kanal-Fader, Crossfader und EQ | 0 % | Noch nicht aufgenommen und getestet |
+| Pads, Hot Cues und Sampler | 0 % | Noch nicht aufgenommen und getestet |
+| FX-Regler und FX-Tasten | 0 % | Noch nicht aufgenommen und getestet |
+| Browser, Track-Auswahl und weitere Bedienelemente | 0 % | Noch nicht aufgenommen und getestet |
+
+### Nächste Schritte
+
+1. **Loop-ON und Loop-Encoder stabilisieren**, ohne den funktionierenden Transport- und Jogwheel-Bereich zu verändern.
+2. **Tempo-Fader und Pitch-Funktionen** einzeln aufnehmen und als separate Mapping-Gruppe ergänzen.
+3. **Mixer-Bereich** mit Kanal-Fadern, Crossfader, Gain und EQ hinzufügen.
+4. **Pads und Hot Cues** pro Deck aufnehmen und testen.
+5. **FX- und Browser-Bereich** ergänzen.
+6. Nach jeder Gruppe eine versionierte Sicherung erstellen und alle bereits fertigen Funktionen erneut testen.
+
+> Die Prozentangabe ist eine technische Projektanzeige und keine Garantie für eine bestimmte rekordbox-Version. MIDI-Profile können sich zwischen rekordbox-Versionen unterscheiden; jede neue Gruppe muss deshalb auf dem Zielsystem getestet werden.
+
 ## MIDI-Signalübersicht
 
 ### Reloop Terminal Mix 8 → Bridge

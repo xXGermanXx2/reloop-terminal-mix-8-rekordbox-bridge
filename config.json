@@ -3,7 +3,7 @@
   "output_contains": "PIONEER DDJ-SX",
   "dump_file": "tm8_midi_dump.jsonl",
   "transport": {
-    "press_only": false,
+    "press_only": true,
     "notes": {
       "5": 11,
       "4": 12,

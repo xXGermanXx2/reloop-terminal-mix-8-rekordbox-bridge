@@ -2,7 +2,7 @@
 
 Diese Bridge übersetzt MIDI-Signale eines **Reloop Terminal Mix 8** in MIDI-Signale, die rekordbox über ein virtuelles loopMIDI-Gerät mit dem Profil **PIONEER DDJ-SX** verarbeiten kann.
 
-Der aktuelle Stand ist für Windows 10/11 und rekordbox 6 ausgelegt. Er unterstützt zwei Jogwheels, Play/Pause, Cue, Load für Deck 1 und 2 sowie den getesteten Tempo-Fader. Der Mixer-Bereich ist technisch vorbereitet, aber noch nicht in rekordbox bestätigt. Die funktionierenden Kernfunktionen werden über einen kontrollierten Filter weitergegeben; unbekannte MIDI-Signale werden nicht an rekordbox gesendet.
+Der aktuelle Stand ist für Windows 10/11 und rekordbox 6 ausgelegt. Er unterstützt zwei Jogwheels, Play/Pause, Cue, Load für Deck 1 und 2, den Tempo-Fader für Deck 1/2 sowie einen experimentellen Loop-Bereich. Die funktionierenden Kernfunktionen werden über einen kontrollierten Filter weitergegeben; unbekannte MIDI-Signale werden nicht an rekordbox gesendet.
 
 > **Wichtig:** Das Projekt verwendet ein virtuelles MIDI-Gerät. Der physische Terminal Mix 8 darf in rekordbox nicht zusätzlich als zweiter aktiver MIDI-Eingang für dieselben Funktionen gemappt werden.
 
@@ -37,8 +37,8 @@ Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nich
 | Loop-ON/AutoLoop | 70 % | Signal und AutoLoop-Ziel bekannt; Rekordbox-Verhalten wird weiter abgesichert |
 | Loop-Encoder Deck 2 | 50 % | Eingangssignal bekannt; LoopHalf/LoopDouble-Ausgabe noch in Validierung |
 | Loop-Encoder Deck 1 | 0 % | Encoder liefert im aktuellen Dump keine MIDI-Daten; Hardwareprüfung erforderlich |
-| Tempo-Fader und Tempo-Funktionen | 100 % | Implementiert und in rekordbox getestet |
-| Kanal-Fader, Crossfader und EQ | 25 % | Rohsignale identifiziert; rekordbox-Test steht noch aus |
+| Tempo-Fader und Tempo-Funktionen | 100 % | 14-Bit-Tempo-Fader implementiert und in rekordbox getestet |
+| Kanal-Fader, Crossfader und EQ | 0 % | Noch nicht aufgenommen und getestet |
 | Pads, Hot Cues und Sampler | 0 % | Noch nicht aufgenommen und getestet |
 | FX-Regler und FX-Tasten | 0 % | Noch nicht aufgenommen und getestet |
 | Browser, Track-Auswahl und weitere Bedienelemente | 0 % | Noch nicht aufgenommen und getestet |
@@ -46,7 +46,7 @@ Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nich
 ### Nächste Schritte
 
 1. **Loop-ON und Loop-Encoder stabilisieren**, ohne den funktionierenden Transport- und Jogwheel-Bereich zu verändern.
-2. **Mixer-Bereich** mit Kanal-Fadern, Crossfader, Gain und EQ nach dem Transport-Fix testen.
+2. **Mixer-Bereich** mit Kanal-Fadern, Crossfader, Gain und EQ hinzufügen.
 3. **Pads und Hot Cues** pro Deck aufnehmen und testen.
 4. **FX- und Browser-Bereich** ergänzen.
 5. Nach jeder Gruppe eine versionierte Sicherung erstellen und alle bereits fertigen Funktionen erneut testen.
@@ -85,12 +85,6 @@ Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nich
 | Loop größer | Note 19 |
 | Tempo-Fader MSB | CC 0 auf dem jeweiligen Kanal |
 | Tempo-Fader LSB | CC 32 auf dem jeweiligen Kanal |
-| Kanal-Fader | CC 19 auf dem jeweiligen Kanal |
-| Crossfader | CC 31 auf Kanal 7 |
-| Gain | CC 4 auf dem jeweiligen Kanal |
-| EQ High | CC 7 auf dem jeweiligen Kanal |
-| EQ Mid | CC 11 auf dem jeweiligen Kanal |
-| EQ Low | CC 15 auf dem jeweiligen Kanal |
 
 ## Voraussetzungen
 

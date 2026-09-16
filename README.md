@@ -2,7 +2,7 @@
 
 Diese Bridge übersetzt MIDI-Signale eines **Reloop Terminal Mix 8** in MIDI-Signale, die rekordbox über ein virtuelles loopMIDI-Gerät mit dem Profil **PIONEER DDJ-SX** verarbeiten kann.
 
-Der aktuelle Stand ist für Windows 10/11 und rekordbox 6 ausgelegt. Er unterstützt zwei Jogwheels, Play/Pause, Cue, Load für Deck 1 und 2 sowie einen experimentellen Loop-Bereich. Die funktionierenden Kernfunktionen werden über einen kontrollierten Filter weitergegeben; unbekannte MIDI-Signale werden nicht an rekordbox gesendet.
+Der aktuelle Stand ist für Windows 10/11 und rekordbox 6 ausgelegt. Er unterstützt zwei Jogwheels, Play/Pause, Cue, Load für Deck 1 und 2, den Tempo-Fader für Deck 1/2 sowie einen experimentellen Loop-Bereich. Die funktionierenden Kernfunktionen werden über einen kontrollierten Filter weitergegeben; unbekannte MIDI-Signale werden nicht an rekordbox gesendet.
 
 > **Wichtig:** Das Projekt verwendet ein virtuelles MIDI-Gerät. Der physische Terminal Mix 8 darf in rekordbox nicht zusätzlich als zweiter aktiver MIDI-Eingang für dieselben Funktionen gemappt werden.
 
@@ -16,6 +16,7 @@ Der aktuelle Stand ist für Windows 10/11 und rekordbox 6 ausgelegt. Er unterst�
 | Play/Pause Deck 1/2 | Aktiv | TM8 Note 5 wird auf Pioneer Note 11 übersetzt |
 | Cue Deck 1/2 | Aktiv | TM8 Note 4 wird auf Pioneer Note 12 übersetzt |
 | Load Deck 1/2 | Aktiv | TM8 Note 16 wird deckabhängig auf `96 46`/`96 47` übersetzt |
+| Tempo-Fader Deck 1/2 | Aktiv | 14-Bit-Pitchwheel wird als Pioneer-HiRes-CC 0 + CC 32 ausgegeben |
 | Loop-ON | Experimentell | AutoLoop an der aktuellen Position mit gewählter Loop-Länge |
 | Loop-Encoder | Experimentell | kleiner/größer über LoopHalf/LoopDouble |
 | Encoder-Druck | Absichtlich deaktiviert | erzeugt keine Aktion |
@@ -25,7 +26,7 @@ Der aktuelle Stand ist für Windows 10/11 und rekordbox 6 ausgelegt. Er unterst�
 
 Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nicht nach der Anzahl einzelner CSV-Zeilen. Eine Gruppe gilt erst als fertig, wenn das Eingangssignal identifiziert, die Bridge-Übersetzung implementiert, das Rekordbox-Profil angepasst und die Funktion am Controller getestet wurde.
 
-### Gesamtfortschritt: **ca. 55 %**
+### Gesamtfortschritt: **ca. 60 %**
 
 | Bereich | Fortschritt | Status |
 |---|---:|---|
@@ -36,7 +37,7 @@ Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nich
 | Loop-ON/AutoLoop | 70 % | Signal und AutoLoop-Ziel bekannt; Rekordbox-Verhalten wird weiter abgesichert |
 | Loop-Encoder Deck 2 | 50 % | Eingangssignal bekannt; LoopHalf/LoopDouble-Ausgabe noch in Validierung |
 | Loop-Encoder Deck 1 | 0 % | Encoder liefert im aktuellen Dump keine MIDI-Daten; Hardwareprüfung erforderlich |
-| Tempo-Fader und Tempo-Funktionen | 0 % | Noch nicht aufgenommen und getestet |
+| Tempo-Fader und Tempo-Funktionen | 100 % | 14-Bit-Tempo-Fader implementiert und in rekordbox getestet |
 | Kanal-Fader, Crossfader und EQ | 0 % | Noch nicht aufgenommen und getestet |
 | Pads, Hot Cues und Sampler | 0 % | Noch nicht aufgenommen und getestet |
 | FX-Regler und FX-Tasten | 0 % | Noch nicht aufgenommen und getestet |
@@ -45,11 +46,10 @@ Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nich
 ### Nächste Schritte
 
 1. **Loop-ON und Loop-Encoder stabilisieren**, ohne den funktionierenden Transport- und Jogwheel-Bereich zu verändern.
-2. **Tempo-Fader und Pitch-Funktionen** einzeln aufnehmen und als separate Mapping-Gruppe ergänzen.
-3. **Mixer-Bereich** mit Kanal-Fadern, Crossfader, Gain und EQ hinzufügen.
-4. **Pads und Hot Cues** pro Deck aufnehmen und testen.
-5. **FX- und Browser-Bereich** ergänzen.
-6. Nach jeder Gruppe eine versionierte Sicherung erstellen und alle bereits fertigen Funktionen erneut testen.
+2. **Mixer-Bereich** mit Kanal-Fadern, Crossfader, Gain und EQ hinzufügen.
+3. **Pads und Hot Cues** pro Deck aufnehmen und testen.
+4. **FX- und Browser-Bereich** ergänzen.
+5. Nach jeder Gruppe eine versionierte Sicherung erstellen und alle bereits fertigen Funktionen erneut testen.
 
 > Die Prozentangabe ist eine technische Projektanzeige und keine Garantie für eine bestimmte rekordbox-Version. MIDI-Profile können sich zwischen rekordbox-Versionen unterscheiden; jede neue Gruppe muss deshalb auf dem Zielsystem getestet werden.
 
@@ -68,6 +68,7 @@ Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nich
 | Load | Note 16 auf dem jeweiligen Deck-Kanal |
 | Loop-Encoder Deck 2 | Kanal 2, CC 29, Werte 63/65 |
 | Loop-ON | Note 30 auf dem jeweiligen Deck-Kanal |
+| Tempo-Fader | Pitchwheel auf dem jeweiligen TM8-Deck-Kanal |
 
 ### Bridge → rekordbox/DDJ-SX-Profil
 
@@ -82,6 +83,8 @@ Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nich
 | AutoLoop | Note 20 auf dem jeweiligen Kanal |
 | Loop kleiner | Note 18 |
 | Loop größer | Note 19 |
+| Tempo-Fader MSB | CC 0 auf dem jeweiligen Kanal |
+| Tempo-Fader LSB | CC 32 auf dem jeweiligen Kanal |
 
 ## Voraussetzungen
 

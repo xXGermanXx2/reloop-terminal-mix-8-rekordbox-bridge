@@ -60,7 +60,7 @@ def choose_port(kind: str, wanted: str) -> str:
 
 def dump_message(fp, msg):
     rec = {"time": time.time(), "type": msg.type}
-    rec.update({k: getattr(msg, k) for k in ("channel", "note", "control", "value", "velocity") if hasattr(msg, k)})
+    rec.update({k: getattr(msg, k) for k in ("channel", "note", "control", "value", "velocity", "pitch") if hasattr(msg, k)})
     fp.write(json.dumps(rec) + "\n"); fp.flush()
 
 
@@ -163,6 +163,24 @@ def translate_loop(msg, cfg, last_loop_cc):
     return None
 
 
+def translate_pitchwheel(msg, cfg):
+    """Convert TM8 pitchwheel data to Pioneer 14-bit tempo CC data."""
+    pitch = cfg.get("pitch", {})
+    if not pitch.get("enabled", False) or msg.type != "pitchwheel":
+        return None
+    if str(msg.channel) not in pitch.get("channels", ["0", "1"]):
+        return None
+    unsigned = max(0, min(16383, int(msg.pitch) + 8192))
+    msb = unsigned >> 7
+    lsb = unsigned & 0x7F
+    cc = int(pitch.get("output_cc", 0))
+    return [
+        mido.Message("control_change", channel=msg.channel, control=cc, value=msb),
+        mido.Message("control_change", channel=msg.channel,
+                     control=int(pitch.get("output_lsb_cc", 32)), value=lsb),
+    ]
+
+
 def run(config_path: Path, dump_only=False, debug=False):
     cfg = load_config(config_path)
     inp = choose_port("in", cfg["input_contains"])
@@ -188,10 +206,13 @@ def run(config_path: Path, dump_only=False, debug=False):
                 translated = translate_jog(msg, cfg)
                 transport = translate_transport(msg, cfg)
                 loop_message = translate_loop(msg, cfg, last_loop_cc)
+                pitch_message = translate_pitchwheel(msg, cfg)
                 if debug and transport is not None:
                     print(f"TRANSPORT IN {msg.bytes()} -> OUT {transport.bytes()}", flush=True)
                 if debug and loop_message is not None:
                     print(f"LOOP IN {msg.bytes()} -> OUT {[m.bytes() for m in loop_message]}", flush=True)
+                if debug and pitch_message is not None:
+                    print(f"PITCH IN {msg.pitch} -> OUT {[m.bytes() for m in pitch_message]}", flush=True)
                 if (cfg.get("jog", {}).get("require_touch", False)
                         and msg.type == "control_change"
                         and msg.control == cfg["jog"]["cc_by_deck"].get(str(deck_from_channel(msg.channel)))
@@ -212,6 +233,9 @@ def run(config_path: Path, dump_only=False, debug=False):
                     elif loop_message is not None:
                         for loop_msg in loop_message:
                             midi_out.send(loop_msg)
+                    elif pitch_message is not None:
+                        for pitch_msg in pitch_message:
+                            midi_out.send(pitch_msg)
                     elif translated is not None:
                         midi_out.send(translated)
                     continue

@@ -7,5 +7,7 @@ Load,Load,Button,,9646,9647,,,,,,,,,TM8 Load Deck 1/2 input only
 AutoLoop,AutoLoop,Button,9014,0,1,2,3,,,,,,,TM8 ON creates AutoLoop at current beatgrid position
 LoopHalf,LoopHalf,Button,9012,0,1,2,3,,,,,,,TM8 encoder smaller
 LoopDouble,LoopDouble,Button,9013,0,1,2,3,,,,,,,TM8 encoder larger
+TempoSlider,TempoSlider,KnobSliderHiRes,B000,0,1,2,3,,,,,,Fast,Tempo MSB from TM8 pitchwheel
+TempoSlider,TempoSlider+Shift,KnobSliderHiRes,B020,0,1,2,3,,,,,,Fast,Tempo LSB from TM8 pitchwheel
 JogScratch,JogScratch,JogRotate,B022,0,1,2,3,,,,,,RO,TM8 JogScratch only
 JogTouch,JogTouch,JogTouch,9036,0,1,2,3,,,,,,RO,TM8 JogTouch only

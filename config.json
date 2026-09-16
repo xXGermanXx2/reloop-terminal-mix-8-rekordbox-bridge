@@ -28,6 +28,12 @@
       "30": 20
     }
   },
+  "pitch": {
+    "enabled": true,
+    "channels": ["0", "1"],
+    "output_cc": 0,
+    "output_lsb_cc": 32
+  },
   "jog": {
     "enabled": true,
     "cc_by_deck": {"0": 7, "1": 7, "2": 7, "3": 7},

@@ -34,6 +34,19 @@
     "output_cc": 0,
     "output_lsb_cc": 32
   },
+  "mixer": {
+    "enabled": true,
+    "controls_by_channel": {
+      "0": {"9": 4, "10": 7, "11": 11, "12": 15, "15": 19},
+      "1": {"9": 4, "10": 7, "11": 11, "12": 15, "15": 19},
+      "2": {"9": 4, "10": 7, "11": 11, "12": 15, "15": 19},
+      "3": {"9": 4, "10": 7, "11": 11, "12": 15, "15": 19}
+    },
+    "crossfader_input_channel": 0,
+    "crossfader_input_cc": 43,
+    "crossfader_output_channel": 6,
+    "crossfader_output_cc": 31
+  },
   "jog": {
     "enabled": true,
     "cc_by_deck": {"0": 7, "1": 7, "2": 7, "3": 7},

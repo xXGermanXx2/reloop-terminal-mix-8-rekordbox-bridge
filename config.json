@@ -1,0 +1,50 @@
+{
+  "input_contains": "Terminal Mix 8",
+  "output_contains": "PIONEER DDJ-SX",
+  "dump_file": "tm8_midi_dump.jsonl",
+  "transport": {
+    "press_only": false,
+    "notes": {
+      "5": 11,
+      "4": 12,
+      "16": {
+        "by_channel": {
+          "0": {"note": 70, "channel": 6},
+          "1": {"note": 71, "channel": 6}
+        }
+      }
+    }
+  },
+  "loop": {
+    "encoder_cc_by_channel": {
+      "1": 29
+    },
+    "encoder_values": {
+      "63": 18,
+      "65": 19
+    },
+    "note_press_only": true,
+    "note_map": {
+      "30": 20
+    }
+  },
+  "jog": {
+    "enabled": true,
+    "cc_by_deck": {"0": 7, "1": 7, "2": 7, "3": 7},
+    "touch_note_by_deck": {"0": 7, "1": 7, "2": 7, "3": 7},
+    "vinyl_note_by_deck": {"0": 1, "1": 1, "2": 1, "3": 1},
+    "rekordbox_jog_cc": 34,
+    "rekordbox_touch_note": 54,
+    "output_channel_by_input": {"0": 0, "1": 1, "2": 2, "3": 3},
+    "jog_mode": "centered_relative",
+    "neutral": 64,
+    "scale": 1,
+    "reverse": false,
+    "require_touch": false
+  },
+  "filter": {
+    "drop_sysex": false,
+    "jog_only_test": false,
+    "transport_only": true
+  }
+}

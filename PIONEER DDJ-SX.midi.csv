@@ -9,10 +9,10 @@ LoopHalf,LoopHalf,Button,9012,0,1,2,3,,,,,,,TM8 encoder smaller
 LoopDouble,LoopDouble,Button,9013,0,1,2,3,,,,,,,TM8 encoder larger
 TempoSlider,TempoSlider,KnobSliderHiRes,B000,0,1,2,3,,,,,,Fast,Tempo MSB from TM8 pitchwheel
 TempoSlider,TempoSlider+Shift,KnobSliderHiRes,B020,0,1,2,3,,,,,,Fast,Tempo LSB from TM8 pitchwheel
-ChannelFader,ChannelFader,KnobSliderHiRes,B013,0,1,2,3,,,,,,,TM8 CC 15 translated to Pioneer CC 19
-Gain,Gain,KnobSliderHiRes,B004,0,1,2,3,,,,,,Fast,TM8 CC 9 translated to Pioneer CC 4
-EQHigh,EQHigh,KnobSliderHiRes,B007,0,1,2,3,,,,,,Fast,TM8 CC 10 translated to Pioneer CC 7
-EQMid,EQMid,KnobSliderHiRes,B00B,0,1,2,3,,,,,,Fast,TM8 CC 11 translated to Pioneer CC 11
-EQLow,EQLow,KnobSliderHiRes,B00F,0,1,2,3,,,,,,Fast,TM8 CC 12 translated to Pioneer CC 15
+ChannelFader,ChannelFader,KnobSlider,B013,0,1,2,3,,,,,,,TM8 CC 15 translated to Pioneer CC 19
+Gain,Gain,KnobSlider,B004,0,1,2,3,,,,,,Fast,TM8 CC 9 translated to Pioneer CC 4
+EQHigh,EQHigh,KnobSlider,B007,0,1,2,3,,,,,,Fast,TM8 CC 10 translated to Pioneer CC 7
+EQMid,EQMid,KnobSlider,B00B,0,1,2,3,,,,,,Fast,TM8 CC 11 translated to Pioneer CC 11
+EQLow,EQLow,KnobSlider,B00F,0,1,2,3,,,,,,Fast,TM8 CC 12 translated to Pioneer CC 15
 JogScratch,JogScratch,JogRotate,B022,0,1,2,3,,,,,,RO,TM8 JogScratch only
 JogTouch,JogTouch,JogTouch,9036,0,1,2,3,,,,,,RO,TM8 JogTouch only

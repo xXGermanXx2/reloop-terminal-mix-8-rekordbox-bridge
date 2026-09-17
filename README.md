@@ -2,7 +2,7 @@
 
 Diese Bridge übersetzt MIDI-Signale eines **Reloop Terminal Mix 8** in MIDI-Signale, die rekordbox über ein virtuelles loopMIDI-Gerät mit dem Profil **PIONEER DDJ-SX** verarbeiten kann.
 
-Der aktuelle Stand ist für Windows 10/11 und rekordbox 6 ausgelegt. Er unterstützt zwei Jogwheels, Play/Pause, Cue, Load für Deck 1 und 2, den Tempo-Fader, Kanal-Fader, Gain, EQ und die Filter-Regler über isolierte Übersetzungen. Der Crossfader bleibt vorerst deaktiviert. Die funktionierenden Kernfunktionen werden über einen kontrollierten Filter weitergegeben; unbekannte MIDI-Signale werden nicht an rekordbox gesendet.
+Der aktuelle Stand ist für Windows 10/11 und rekordbox 6 ausgelegt. Er unterstützt zwei Jogwheels, Play/Pause, Cue, Load für Deck 1 und 2, den Tempo-Fader, Kanal-Fader, Gain, EQ, Filter sowie Browse-Drehung und Browse-Enter über isolierte Übersetzungen. Der Crossfader bleibt vorerst deaktiviert. Die funktionierenden Kernfunktionen werden über einen kontrollierten Filter weitergegeben; unbekannte MIDI-Signale werden nicht an rekordbox gesendet.
 
 > **Wichtig:** Das Projekt verwendet ein virtuelles MIDI-Gerät. Der physische Terminal Mix 8 darf in rekordbox nicht zusätzlich als zweiter aktiver MIDI-Eingang für dieselben Funktionen gemappt werden.
 
@@ -20,6 +20,8 @@ Der aktuelle Stand ist für Windows 10/11 und rekordbox 6 ausgelegt. Er unterst�
 | Kanal-Fader Deck 1–4 | Aktiv | TM8 CC 15 wird isoliert auf Pioneer CC 19 übersetzt |
 | Gain und EQ Deck 1–4 | Aktiv | TM8 CC 9–12 werden isoliert auf Pioneer CC 4/7/11/15 übersetzt |
 | Filter Deck 1–4 | Aktiv | TM8 CC 13 wird auf die Pioneer-CFX-Ziele CC 23–26 übersetzt |
+| Browse-Drehung | Aktiv | TM8 CC 40 wird auf Pioneer Kanal 7/CC 64 übersetzt |
+| Browse-Enter | Aktiv | TM8 Note 40 wird press-only auf Pioneer Kanal 7/Note 65 übersetzt |
 | Crossfader | Deaktiviert | Wird in dieser Version absichtlich nicht weitergeleitet |
 | Loop-ON | Experimentell | AutoLoop an der aktuellen Position mit gewählter Loop-Länge |
 | Loop-Encoder | Experimentell | kleiner/größer über LoopHalf/LoopDouble |
@@ -30,7 +32,7 @@ Der aktuelle Stand ist für Windows 10/11 und rekordbox 6 ausgelegt. Er unterst�
 
 Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nicht nach der Anzahl einzelner CSV-Zeilen. Eine Gruppe gilt erst als fertig, wenn das Eingangssignal identifiziert, die Bridge-Übersetzung implementiert, das Rekordbox-Profil angepasst und die Funktion am Controller getestet wurde.
 
-### Gesamtfortschritt: **ca. 65 %**
+### Gesamtfortschritt: **ca. 70 %**
 
 | Bereich | Fortschritt | Status |
 |---|---:|---|
@@ -44,6 +46,7 @@ Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nich
 | Tempo-Fader und Tempo-Funktionen | 100 % | 14-Bit-Tempo-Fader implementiert und in rekordbox getestet |
 | Kanal-Fader, Gain und EQ | 100 % | Implementiert und getestet |
 | Filter Deck 1–4 | 100 % | Implementiert und getestet |
+| Browse-Drehung und Enter | 100 % | Implementiert und getestet |
 | Crossfader | 0 % | Absichtlich ausgelassen |
 | Pads, Hot Cues und Sampler | 0 % | Noch nicht aufgenommen und getestet |
 | FX-Regler und FX-Tasten | 0 % | Noch nicht aufgenommen und getestet |
@@ -77,6 +80,8 @@ Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nich
 | Kanal-Fader | CC 15 auf dem jeweiligen TM8-Deck-Kanal |
 | Gain und EQ | CC 9–12 auf dem jeweiligen TM8-Deck-Kanal |
 | Filter | CC 13 auf dem jeweiligen TM8-Deck-Kanal |
+| Browse-Drehung | CC 40 auf MIDI-Kanal 1 |
+| Browse-Enter | Note 40 auf MIDI-Kanal 1 |
 
 ### Bridge → rekordbox/DDJ-SX-Profil
 
@@ -102,6 +107,8 @@ Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nich
 | Filter Deck 2 | CC 24 auf MIDI-Kanal 7 |
 | Filter Deck 3 | CC 25 auf MIDI-Kanal 7 |
 | Filter Deck 4 | CC 26 auf MIDI-Kanal 7 |
+| Browse-Drehung | CC 64 auf MIDI-Kanal 7 |
+| Browse-Enter | Note 65 auf MIDI-Kanal 7 |
 
 ## Voraussetzungen
 
@@ -236,6 +243,18 @@ Loop-Ausgaben sehen beispielsweise so aus:
 ```text
 LOOP IN [144, 30, 127] -> OUT [[144, 20, 127]]
 ```
+
+### Kontinuierliche `MIXER IN`-Ausgaben
+
+Es ist normal, dass ein Kanal-Fader während des Bewegens viele MIDI-Nachrichten erzeugt. Der Terminal Mix 8 sendet jeden neuen Positionswert, damit rekordbox die Faderposition flüssig verfolgen kann. Auch wenn der Fader scheinbar stillsteht, können einzelne Wiederholungen erscheinen, wenn die Hardware die Position erneut meldet.
+
+Beispiel:
+
+```text
+MIXER IN [178, 15, 33] -> OUT [178, 19, 33]
+```
+
+Das bedeutet: MIDI-Kanal 3, TM8-CC 15, Wert 33 wird als Pioneer-CC 19 weitergegeben. Die Ausgabe ist unproblematisch, solange sich der Wert beim Bewegen sinnvoll verändert und sich der Fader in rekordbox entsprechend bewegt. Springen die Werte ohne Berührung stark hin und her, sollte der Fader gereinigt, die USB-Verbindung geprüft und zunächst nur dieser Fader getestet werden.
 
 ## Wichtige rekordbox-Einstellungen
 

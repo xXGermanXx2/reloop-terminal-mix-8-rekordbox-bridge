@@ -210,6 +210,25 @@ def translate_filter(msg, cfg):
                         value=max(0, min(127, int(msg.value))))
 
 
+def translate_browse(msg, cfg):
+    """Translate the TM8 browse encoder and its push/enter action."""
+    browse = cfg.get("browse", {})
+    if not browse.get("enabled", False):
+        return None
+    out_channel = int(browse.get("output_channel", 6))
+    if msg.type == "control_change":
+        if msg.channel != int(browse.get("input_channel", 0)) or msg.control != int(browse.get("input_cc", 40)):
+            return None
+        return mido.Message("control_change", channel=out_channel,
+                            control=int(browse.get("output_cc", 64)), value=msg.value)
+    if msg.type in ("note_on", "note_off") and msg.channel == int(browse.get("input_channel", 0)) and msg.note == int(browse.get("press_note", 40)):
+        if browse.get("press_only", True) and (msg.type == "note_off" or msg.velocity == 0):
+            return None
+        return mido.Message("note_on", channel=out_channel,
+                            note=int(browse.get("output_note", 65)), velocity=127)
+    return None
+
+
 def run(config_path: Path, dump_only=False, debug=False):
     cfg = load_config(config_path)
     inp = choose_port("in", cfg["input_contains"])
@@ -238,6 +257,7 @@ def run(config_path: Path, dump_only=False, debug=False):
                 pitch_message = translate_pitchwheel(msg, cfg)
                 mixer_message = translate_mixer(msg, cfg)
                 filter_message = translate_filter(msg, cfg)
+                browse_message = translate_browse(msg, cfg)
                 if debug and transport is not None:
                     print(f"TRANSPORT IN {msg.bytes()} -> OUT {transport.bytes()}", flush=True)
                 if debug and loop_message is not None:
@@ -248,6 +268,8 @@ def run(config_path: Path, dump_only=False, debug=False):
                     print(f"MIXER IN {msg.bytes()} -> OUT {mixer_message.bytes()}", flush=True)
                 if debug and filter_message is not None:
                     print(f"FILTER IN {msg.bytes()} -> OUT {filter_message.bytes()}", flush=True)
+                if debug and browse_message is not None:
+                    print(f"BROWSE IN {msg.bytes()} -> OUT {browse_message.bytes()}", flush=True)
                 if (cfg.get("jog", {}).get("require_touch", False)
                         and msg.type == "control_change"
                         and msg.control == cfg["jog"]["cc_by_deck"].get(str(deck_from_channel(msg.channel)))
@@ -275,6 +297,8 @@ def run(config_path: Path, dump_only=False, debug=False):
                         midi_out.send(mixer_message)
                     elif filter_message is not None:
                         midi_out.send(filter_message)
+                    elif browse_message is not None:
+                        midi_out.send(browse_message)
                     elif translated is not None:
                         midi_out.send(translated)
                     continue
@@ -286,6 +310,8 @@ def run(config_path: Path, dump_only=False, debug=False):
                     midi_out.send(mixer_message)
                 elif filter_message is not None:
                     midi_out.send(filter_message)
+                elif browse_message is not None:
+                    midi_out.send(browse_message)
                 elif not (msg.type in ("control_change", "note_on", "note_off") and
                           ((msg.type == "control_change" and msg.control in cfg["jog"]["cc_by_deck"].values()) or
                            (msg.type in ("note_on", "note_off") and msg.note in cfg["jog"]["touch_note_by_deck"].values()))):

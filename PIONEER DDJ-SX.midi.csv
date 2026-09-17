@@ -1,6 +1,8 @@
 @file,1,PIONEER DDJ-SX,,,,,,,,,,,,
 #name,function,type,input,deck1,deck2,deck3,deck4,output,deck1,deck2,deck3,deck4,option,comment
 ,,,,,,,,,,,,,,
+Browse,Browse,Rotary,B640,,,,,,,,,,,TM8 Browse encoder CC 40
+Forward,Browse+Press,Button,9641,,,,,,,,,,,TM8 Browse encoder press / Enter
 PlayPause,PlayPause,Button,900B,0,1,2,3,,,,,,,TM8 Play/Pause input only
 Cue,Cue,Button,900C,0,1,2,3,,,,,,,TM8 Cue input only
 Load,Load,Button,,9646,9647,,,,,,,,,TM8 Load Deck 1/2 input only

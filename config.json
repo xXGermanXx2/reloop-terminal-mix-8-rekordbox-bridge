@@ -55,6 +55,16 @@
       "3": 26
     }
   },
+  "browse": {
+    "enabled": true,
+    "input_channel": 0,
+    "input_cc": 40,
+    "output_channel": 6,
+    "output_cc": 64,
+    "press_note": 40,
+    "output_note": 65,
+    "press_only": true
+  },
   "jog": {
     "enabled": true,
     "cc_by_deck": {"0": 7, "1": 7, "2": 7, "3": 7},

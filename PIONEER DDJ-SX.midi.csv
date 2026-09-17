@@ -14,5 +14,9 @@ Gain,Gain,KnobSlider,B004,0,1,2,3,,,,,,Fast,TM8 CC 9 translated to Pioneer CC 4
 EQHigh,EQHigh,KnobSlider,B007,0,1,2,3,,,,,,Fast,TM8 CC 10 translated to Pioneer CC 7
 EQMid,EQMid,KnobSlider,B00B,0,1,2,3,,,,,,Fast,TM8 CC 11 translated to Pioneer CC 11
 EQLow,EQLow,KnobSlider,B00F,0,1,2,3,,,,,,Fast,TM8 CC 12 translated to Pioneer CC 15
+CFXParameterCH1,CFXParameterCH1,KnobSlider,B617,,,,,,,,,,Fast,TM8 Filter Deck 1 CC 13
+CFXParameterCH2,CFXParameterCH2,KnobSlider,B618,,,,,,,,,,Fast,TM8 Filter Deck 2 CC 13
+CFXParameterCH3,CFXParameterCH3,KnobSlider,B619,,,,,,,,,,Fast,TM8 Filter Deck 3 CC 13
+CFXParameterCH4,CFXParameterCH4,KnobSlider,B61A,,,,,,,,,,Fast,TM8 Filter Deck 4 CC 13
 JogScratch,JogScratch,JogRotate,B022,0,1,2,3,,,,,,RO,TM8 JogScratch only
 JogTouch,JogTouch,JogTouch,9036,0,1,2,3,,,,,,RO,TM8 JogTouch only

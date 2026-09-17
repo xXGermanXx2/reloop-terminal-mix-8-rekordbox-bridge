@@ -194,6 +194,22 @@ def translate_mixer(msg, cfg):
                         control=int(target), value=max(0, min(127, int(msg.value))))
 
 
+def translate_filter(msg, cfg):
+    """Translate TM8 filter CC13 to DDJ-SX CFX controls on channel 7."""
+    filt = cfg.get("filter_control", {})
+    if not filt.get("enabled", False) or msg.type != "control_change":
+        return None
+    if msg.control != int(filt.get("input_cc", 13)):
+        return None
+    target = filt.get("output_cc_by_channel", {}).get(str(msg.channel))
+    if target is None:
+        return None
+    return mido.Message("control_change",
+                        channel=int(filt.get("output_channel", 6)),
+                        control=int(target),
+                        value=max(0, min(127, int(msg.value))))
+
+
 def run(config_path: Path, dump_only=False, debug=False):
     cfg = load_config(config_path)
     inp = choose_port("in", cfg["input_contains"])
@@ -221,6 +237,7 @@ def run(config_path: Path, dump_only=False, debug=False):
                 loop_message = translate_loop(msg, cfg, last_loop_cc)
                 pitch_message = translate_pitchwheel(msg, cfg)
                 mixer_message = translate_mixer(msg, cfg)
+                filter_message = translate_filter(msg, cfg)
                 if debug and transport is not None:
                     print(f"TRANSPORT IN {msg.bytes()} -> OUT {transport.bytes()}", flush=True)
                 if debug and loop_message is not None:
@@ -229,6 +246,8 @@ def run(config_path: Path, dump_only=False, debug=False):
                     print(f"PITCH IN {msg.pitch} -> OUT {[m.bytes() for m in pitch_message]}", flush=True)
                 if debug and mixer_message is not None:
                     print(f"MIXER IN {msg.bytes()} -> OUT {mixer_message.bytes()}", flush=True)
+                if debug and filter_message is not None:
+                    print(f"FILTER IN {msg.bytes()} -> OUT {filter_message.bytes()}", flush=True)
                 if (cfg.get("jog", {}).get("require_touch", False)
                         and msg.type == "control_change"
                         and msg.control == cfg["jog"]["cc_by_deck"].get(str(deck_from_channel(msg.channel)))
@@ -254,6 +273,8 @@ def run(config_path: Path, dump_only=False, debug=False):
                             midi_out.send(pitch_msg)
                     elif mixer_message is not None:
                         midi_out.send(mixer_message)
+                    elif filter_message is not None:
+                        midi_out.send(filter_message)
                     elif translated is not None:
                         midi_out.send(translated)
                     continue
@@ -263,6 +284,8 @@ def run(config_path: Path, dump_only=False, debug=False):
                     midi_out.send(translated)
                 elif mixer_message is not None:
                     midi_out.send(mixer_message)
+                elif filter_message is not None:
+                    midi_out.send(filter_message)
                 elif not (msg.type in ("control_change", "note_on", "note_off") and
                           ((msg.type == "control_change" and msg.control in cfg["jog"]["cc_by_deck"].values()) or
                            (msg.type in ("note_on", "note_off") and msg.note in cfg["jog"]["touch_note_by_deck"].values()))):

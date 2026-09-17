@@ -44,6 +44,17 @@
       "15": 19
     }
   },
+  "filter_control": {
+    "enabled": true,
+    "input_cc": 13,
+    "output_channel": 6,
+    "output_cc_by_channel": {
+      "0": 23,
+      "1": 24,
+      "2": 25,
+      "3": 26
+    }
+  },
   "jog": {
     "enabled": true,
     "cc_by_deck": {"0": 7, "1": 7, "2": 7, "3": 7},

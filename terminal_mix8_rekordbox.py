@@ -98,7 +98,7 @@ def translate_jog(msg, cfg):
     return None
 
 
-def translate_transport(msg, cfg):
+def translate_transport(msg, cfg, pressed_notes=None):
     """Translate TM8 transport notes to Pioneer DDJ-SX notes."""
     if msg.type not in ("note_on", "note_off"):
         return None
@@ -109,6 +109,20 @@ def translate_transport(msg, cfg):
             return None
     channel = msg.channel
     mapping = cfg.get("transport", {}).get("notes", {})
+    press_only_notes = {int(n) for n in cfg.get("transport", {}).get("press_only_notes", [])}
+    debounce_notes = {int(n) for n in cfg.get("transport", {}).get("debounce_notes", [])}
+    if pressed_notes is None:
+        pressed_notes = set()
+    if msg.note in debounce_notes:
+        key = (msg.channel, msg.note)
+        if msg.type == "note_on" and msg.velocity > 0:
+            if key in pressed_notes:
+                return None
+            pressed_notes.add(key)
+        elif msg.type == "note_off" or (msg.type == "note_on" and msg.velocity == 0):
+            pressed_notes.discard(key)
+    if msg.note in press_only_notes and (msg.type == "note_off" or (msg.type == "note_on" and msg.velocity == 0)):
+        return None
     spec = mapping.get(str(msg.note))
     if spec is None:
         return None
@@ -122,7 +136,7 @@ def translate_transport(msg, cfg):
     else:
         target = int(spec)
         out_channel = channel
-    if cfg.get("transport", {}).get("press_only", False):
+    if cfg.get("transport", {}).get("press_only", False) or msg.note in press_only_notes:
         return mido.Message("note_on", channel=out_channel, note=target, velocity=127)
     return mido.Message(msg.type, channel=out_channel, note=target, velocity=msg.velocity)
 
@@ -229,6 +243,18 @@ def translate_browse(msg, cfg):
     return None
 
 
+def translate_hotcue(msg, cfg):
+    """Translate TM8 cue-pad notes to DDJ-SX hot-cue pad channels."""
+    pads = cfg.get("hotcue", {})
+    if not pads.get("enabled", False) or msg.type not in ("note_on", "note_off"):
+        return None
+    out_channel = pads.get("output_channel_by_input", {}).get(str(msg.channel))
+    if out_channel is None or not 0 <= int(msg.note) <= 7:
+        return None
+    return mido.Message(msg.type, channel=int(out_channel), note=int(msg.note),
+                        velocity=int(msg.velocity))
+
+
 def run(config_path: Path, dump_only=False, debug=False):
     cfg = load_config(config_path)
     inp = choose_port("in", cfg["input_contains"])
@@ -238,6 +264,7 @@ def run(config_path: Path, dump_only=False, debug=False):
     dump_fp = open(cfg["dump_file"], "a", encoding="utf-8") if dump_only else None
     touch_active = {0: False, 1: False, 2: False, 3: False}
     last_loop_cc = {}
+    pressed_transport_notes = set()
     try:
         with mido.open_input(inp) as midi_in, mido.open_output(out) as midi_out:
             for msg in midi_in:
@@ -252,12 +279,13 @@ def run(config_path: Path, dump_only=False, debug=False):
                         and msg.note == cfg["jog"]["touch_note_by_deck"].get(str(deck_from_channel(msg.channel)), -1)):
                     touch_active[deck_from_channel(msg.channel)] = (msg.type == "note_on" and msg.velocity > 0)
                 translated = translate_jog(msg, cfg)
-                transport = translate_transport(msg, cfg)
+                transport = translate_transport(msg, cfg, pressed_transport_notes)
                 loop_message = translate_loop(msg, cfg, last_loop_cc)
                 pitch_message = translate_pitchwheel(msg, cfg)
                 mixer_message = translate_mixer(msg, cfg)
                 filter_message = translate_filter(msg, cfg)
                 browse_message = translate_browse(msg, cfg)
+                hotcue_message = translate_hotcue(msg, cfg)
                 if debug and transport is not None:
                     print(f"TRANSPORT IN {msg.bytes()} -> OUT {transport.bytes()}", flush=True)
                 if debug and loop_message is not None:
@@ -270,6 +298,8 @@ def run(config_path: Path, dump_only=False, debug=False):
                     print(f"FILTER IN {msg.bytes()} -> OUT {filter_message.bytes()}", flush=True)
                 if debug and browse_message is not None:
                     print(f"BROWSE IN {msg.bytes()} -> OUT {browse_message.bytes()}", flush=True)
+                if debug and hotcue_message is not None:
+                    print(f"HOTCUE IN {msg.bytes()} -> OUT {hotcue_message.bytes()}", flush=True)
                 if (cfg.get("jog", {}).get("require_touch", False)
                         and msg.type == "control_change"
                         and msg.control == cfg["jog"]["cc_by_deck"].get(str(deck_from_channel(msg.channel)))
@@ -285,7 +315,9 @@ def run(config_path: Path, dump_only=False, debug=False):
                         midi_out.send(translated)
                     continue
                 if cfg.get("filter", {}).get("transport_only"):
-                    if transport is not None:
+                    if hotcue_message is not None:
+                        midi_out.send(hotcue_message)
+                    elif transport is not None:
                         midi_out.send(transport)
                     elif loop_message is not None:
                         for loop_msg in loop_message:
@@ -304,7 +336,9 @@ def run(config_path: Path, dump_only=False, debug=False):
                     continue
                 # Drop the original TM8 jog/touch message after translating;
                 # pass all other controls through unchanged.
-                if translated is not None:
+                if hotcue_message is not None:
+                    midi_out.send(hotcue_message)
+                elif translated is not None:
                     midi_out.send(translated)
                 elif mixer_message is not None:
                     midi_out.send(mixer_message)

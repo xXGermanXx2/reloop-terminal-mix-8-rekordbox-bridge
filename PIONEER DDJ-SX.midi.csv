@@ -3,6 +3,16 @@
 ,,,,,,,,,,,,,,
 Browse,Browse,Rotary,B640,,,,,,,,,,,TM8 Browse encoder CC 40
 Forward,Browse+Press,Button,9641,,,,,,,,,,,TM8 Browse encoder press / Enter
+Back,Back,Button,9665,,,,,,,,,,,TM8 Browse Back note 38
+HeadphoneCue,HeadphoneCue,Button,9054,0,1,2,3,,,,,,,TM8 Headphone Cue note 14
+PAD1_HotCue,PAD1.HotCue.Call,Pad,9000,7,8,,,,9000,7,8,,,,DDJ-SX pad channels 8/9
+PAD2_HotCue,PAD2.HotCue.Call,Pad,9001,7,8,,,,9001,7,8,,,,DDJ-SX pad channels 8/9
+PAD3_HotCue,PAD3.HotCue.Call,Pad,9002,7,8,,,,9002,7,8,,,,DDJ-SX pad channels 8/9
+PAD4_HotCue,PAD4.HotCue.Call,Pad,9003,7,8,,,,9003,7,8,,,,DDJ-SX pad channels 8/9
+PAD5_HotCue,PAD5.HotCue.Call,Pad,9004,7,8,,,,9004,7,8,,,,DDJ-SX pad channels 8/9
+PAD6_HotCue,PAD6.HotCue.Call,Pad,9005,7,8,,,,9005,7,8,,,,DDJ-SX pad channels 8/9
+PAD7_HotCue,PAD7.HotCue.Call,Pad,9006,7,8,,,,9006,7,8,,,,DDJ-SX pad channels 8/9
+PAD8_HotCue,PAD8.HotCue.Call,Pad,9007,7,8,,,,9007,7,8,,,,DDJ-SX pad channels 8/9
 PlayPause,PlayPause,Button,900B,0,1,2,3,,,,,,,TM8 Play/Pause input only
 Cue,Cue,Button,900C,0,1,2,3,,,,,,,TM8 Cue input only
 Load,Load,Button,,9646,9647,,,,,,,,,TM8 Load Deck 1/2 input only

@@ -4,9 +4,20 @@
   "dump_file": "tm8_midi_dump.jsonl",
   "transport": {
     "press_only": false,
+    "press_only_notes": [14],
+    "debounce_notes": [14],
     "notes": {
       "5": 11,
       "4": 12,
+      "38": {"note": 101, "channel": 6},
+      "14": {
+        "by_channel": {
+          "0": {"note": 84, "channel": 0},
+          "1": {"note": 84, "channel": 1},
+          "2": {"note": 84, "channel": 2},
+          "3": {"note": 84, "channel": 3}
+        }
+      },
       "16": {
         "by_channel": {
           "0": {"note": 70, "channel": 6},
@@ -64,6 +75,13 @@
     "press_note": 40,
     "output_note": 65,
     "press_only": true
+  },
+  "hotcue": {
+    "enabled": true,
+    "output_channel_by_input": {
+      "4": 7,
+      "5": 8
+    }
   },
   "jog": {
     "enabled": true,

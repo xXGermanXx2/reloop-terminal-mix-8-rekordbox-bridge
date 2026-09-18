@@ -22,6 +22,7 @@ Der aktuelle Stand ist für Windows 10/11 und rekordbox 6 ausgelegt. Er unterst�
 | Filter Deck 1–4 | Aktiv | TM8 CC 13 wird auf die Pioneer-CFX-Ziele CC 23–26 übersetzt |
 | Browse-Drehung | Aktiv | TM8 CC 40 wird auf Pioneer Kanal 7/CC 64 übersetzt |
 | Browse-Enter | Aktiv | TM8 Note 40 wird press-only auf Pioneer Kanal 7/Note 65 übersetzt |
+| Hot-Cue-Pads Deck 1/2 | Aktiv | Acht Pads je Deck; Bridge-Ausgänge Kanal 8/9; konkurrierende Transportnoten werden unterdrückt |
 | Crossfader | Deaktiviert | Wird in dieser Version absichtlich nicht weitergeleitet |
 | Loop-ON | Experimentell | AutoLoop an der aktuellen Position mit gewählter Loop-Länge |
 | Loop-Encoder | Experimentell | kleiner/größer über LoopHalf/LoopDouble |
@@ -32,7 +33,7 @@ Der aktuelle Stand ist für Windows 10/11 und rekordbox 6 ausgelegt. Er unterst�
 
 Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nicht nach der Anzahl einzelner CSV-Zeilen. Eine Gruppe gilt erst als fertig, wenn das Eingangssignal identifiziert, die Bridge-Übersetzung implementiert, das Rekordbox-Profil angepasst und die Funktion am Controller getestet wurde.
 
-### Gesamtfortschritt: **ca. 70 %**
+### Gesamtfortschritt: **ca. 75 %**
 
 | Bereich | Fortschritt | Status |
 |---|---:|---|
@@ -47,8 +48,9 @@ Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nich
 | Kanal-Fader, Gain und EQ | 100 % | Implementiert und getestet |
 | Filter Deck 1–4 | 100 % | Implementiert und getestet |
 | Browse-Drehung und Enter | 100 % | Implementiert und getestet |
+| Hot-Cue-Pads Deck 1/2 | 100 % | Acht Pads je Deck implementiert und getrennt getestet |
 | Crossfader | 0 % | Absichtlich ausgelassen |
-| Pads, Hot Cues und Sampler | 0 % | Noch nicht aufgenommen und getestet |
+| Pads, Hot Cues und Sampler | 50 % | Hot-Cue-Pads Deck 1/2 fertig; Sampler und weitere Pad-Modi offen |
 | FX-Regler und FX-Tasten | 0 % | Noch nicht aufgenommen und getestet |
 | Browser, Track-Auswahl und weitere Bedienelemente | 0 % | Noch nicht aufgenommen und getestet |
 
@@ -82,6 +84,8 @@ Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nich
 | Filter | CC 13 auf dem jeweiligen TM8-Deck-Kanal |
 | Browse-Drehung | CC 40 auf MIDI-Kanal 1 |
 | Browse-Enter | Note 40 auf MIDI-Kanal 1 |
+| Hot-Cue-Pads Deck 1 | Notes 0–7 auf MIDI-Kanal 5 |
+| Hot-Cue-Pads Deck 2 | Notes 0–7 auf MIDI-Kanal 6 |
 
 ### Bridge → rekordbox/DDJ-SX-Profil
 
@@ -109,6 +113,8 @@ Der Fortschritt wird nach **Funktionsgruppen des Terminal Mix 8** bewertet, nich
 | Filter Deck 4 | CC 26 auf MIDI-Kanal 7 |
 | Browse-Drehung | CC 64 auf MIDI-Kanal 7 |
 | Browse-Enter | Note 65 auf MIDI-Kanal 7 |
+| Hot-Cue-Pads Deck 1 | Notes 0–7 auf MIDI-Kanal 8 |
+| Hot-Cue-Pads Deck 2 | Notes 0–7 auf MIDI-Kanal 9 |
 
 ## Voraussetzungen
 
